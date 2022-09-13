@@ -4,7 +4,7 @@
   "description": "This is a sample TypeScript + Node.js & Express microservice that interacts with the GitHub API in order to retrieve Repositories + Branches information.",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node --unhandled-rejections=strict ./dist/app.js",
+    "start": "tsc && node --unhandled-rejections=strict ./dist/application.js",
     "debug": "export DEBUG=* && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

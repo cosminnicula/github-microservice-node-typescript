@@ -5,23 +5,21 @@ import * as expressWinston from 'express-winston';
 import cors from 'cors';
 import * as dotenv from 'dotenv'
 dotenv.config()
-import debug from 'debug';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 const swaggerDocument = YAML.load('./swagger-openapi3.yml');
 
-import { CommonRoutesConfig } from './application/config/commonRoutes.config';
-import { handleHttpError } from './application/exception/middleware/exceptionHandler.middleware';
-import { StatsRoutes } from './stats/stats.routes.config';
+import { CommonRoutesConfig } from './src/application/config/commonRoutes.config';
+import { handleHttpError } from './src/application/exception/middleware/exceptionHandler.middleware';
+import { StatsRoutes } from './src/stats/stats.routes.config';
 
-const app: express.Application = express();
-const server: http.Server = http.createServer(app);
+const application: express.Application = express();
+const server: http.Server = http.createServer(application);
 const port = process.env.SERVER_PORT;
 const routes: CommonRoutesConfig[] = [];
-const debugLog: debug.IDebugger = debug('app');
 
-app.use(express.json());
-app.use(cors());
+application.use(express.json());
+application.use(cors());
 
 const loggerOptions: expressWinston.LoggerOptions = {
   transports: [new winston.transports.Console()],
@@ -36,15 +34,15 @@ if (!process.env.DEBUG) {
   loggerOptions.meta = false;
 }
 
-app.use(expressWinston.logger(loggerOptions));
+application.use(expressWinston.logger(loggerOptions));
 
-routes.push(new StatsRoutes(app));
+routes.push(new StatsRoutes(application));
 
-app.use('/swagger-ui', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+application.use('/swagger-ui', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use(handleHttpError);
+application.use(handleHttpError);
 
-app.get('/health', (req: express.Request, res: express.Response) => {
+application.get('/health', (req: express.Request, res: express.Response) => {
   res.status(200).send('up')
 });
 

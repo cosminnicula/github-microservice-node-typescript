@@ -1,8 +1,8 @@
 export type RepositoryBranchesEntity = {
   repositoryName: string,
   repositoryOwner: string,
-  branches: [{
+  branches: Array<{
     name: string,
     commitSha: string
-  }]
+  }>
 };
