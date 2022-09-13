@@ -3,6 +3,9 @@ import * as http from 'http';
 import * as winston from 'winston';
 import * as expressWinston from 'express-winston';
 import cors from 'cors';
+import * as dotenv from 'dotenv'
+dotenv.config()
+
 import { CommonRoutesConfig } from './common/common.routes.config';
 import { handleHttpError } from './stats/middleware/errorHandler.middleware';
 import { StatsRoutes } from './stats/stats.routes.config';
@@ -16,7 +19,7 @@ const swaggerDocument = YAML.load('./swagger-openapi3.yml');
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
 const port = 8080;
-const routes: Array<CommonRoutesConfig> = [];
+const routes: CommonRoutesConfig[] = [];
 const debugLog: debug.IDebugger = debug('app');
 
 app.use(express.json());
@@ -32,7 +35,7 @@ const loggerOptions: expressWinston.LoggerOptions = {
 };
 
 if (!process.env.DEBUG) {
-  loggerOptions.meta = false; // when not debugging, make terse
+  loggerOptions.meta = false;
 }
 
 app.use(expressWinston.logger(loggerOptions));

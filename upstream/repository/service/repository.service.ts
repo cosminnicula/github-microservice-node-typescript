@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+import axiosClient from '../../../common/config/api.config';
 import { GenericException } from '../../../common/exception/genericException.entity';
 import { GitHubUsernameNotFoundException } from '../../../common/exception/gitHubUsernameNotFoundException.entity';
 import { RepositoryEntity } from '../entity/repository.entity';
@@ -7,14 +8,8 @@ import { RepositoryEntity } from '../entity/repository.entity';
 class RepositoryService {
   async getAllReposByUsername(username: string) {
     try {
-      const { data } = await axios.get<RepositoryEntity[]>(
-        `https://api.github.com/users/${username}/repos`,
-        {
-          headers: {
-            Accept: 'application/json',
-            Authorization: `token ${'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'}`
-          },
-        },
+      const { data } = await axiosClient.get<RepositoryEntity[]>(
+        `/users/${username}/repos`
       );
 
       return data;
