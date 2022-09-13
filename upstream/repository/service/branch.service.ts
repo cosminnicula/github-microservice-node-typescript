@@ -1,5 +1,5 @@
-import axiosClient from '../../../common/config/api.config';
-import { GenericException } from '../../../common/exception/genericException.entity';
+import axiosClient from '../../../application/config/api.config';
+import { GenericException } from '../../../application/exception/genericException.entity';
 import { BranchEntity } from '../entity/branch.entity';
 
 export async function getAllBranchesByRepositoryName(username: string, repositoryName: string) {

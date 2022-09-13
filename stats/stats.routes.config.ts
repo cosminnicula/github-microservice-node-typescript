@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { CommonRoutesConfig } from '../common/config/commonRoutes.config';
+import { CommonRoutesConfig } from '../application/config/commonRoutes.config';
 import { getRepositories } from './controllers/stats.controller';
 
 export class StatsRoutes extends CommonRoutesConfig {

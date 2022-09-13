@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-import axiosClient from '../../../common/config/api.config';
-import { GenericException } from '../../../common/exception/genericException.entity';
-import { GitHubUsernameNotFoundException } from '../../../common/exception/gitHubUsernameNotFoundException.entity';
+import axiosClient from '../../../application/config/api.config';
+import { GenericException } from '../../../application/exception/genericException.entity';
+import { GitHubUsernameNotFoundException } from '../../../application/exception/gitHubUsernameNotFoundException.entity';
 import { RepositoryEntity } from '../entity/repository.entity';
 
 export async function getAllReposByUsername(username: string) {

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import { GitHubUsernameNotFoundException } from '../../common/exception/gitHubUsernameNotFoundException.entity';
+import { GitHubUsernameNotFoundException } from '../gitHubUsernameNotFoundException.entity';
 
 export function handleHttpError(
   e: Error,
