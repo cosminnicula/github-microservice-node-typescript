@@ -6,7 +6,7 @@ import cors from 'cors';
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-import { CommonRoutesConfig } from './common/common.routes.config';
+import { CommonRoutesConfig } from './common/config/commonRoutes.config';
 import { handleHttpError } from './stats/middleware/errorHandler.middleware';
 import { StatsRoutes } from './stats/stats.routes.config';
 import debug from 'debug';

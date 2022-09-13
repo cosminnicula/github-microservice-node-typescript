@@ -1,7 +1,7 @@
 import express from 'express';
 
-import { CommonRoutesConfig } from '../common/common.routes.config';
-import StatsController from './controllers/stats.controller';
+import { CommonRoutesConfig } from '../common/config/commonRoutes.config';
+import { getRepositories } from './controllers/stats.controller';
 
 export class StatsRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
@@ -11,7 +11,7 @@ export class StatsRoutes extends CommonRoutesConfig {
   configureRoutes() {
     this.app
       .route('/api/v1/stats/repository-branches')
-      .get(StatsController.getRepositories);
+      .get(getRepositories);
 
     return this.app;
   }
