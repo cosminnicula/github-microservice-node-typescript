@@ -5,7 +5,7 @@ import { GenericException } from '../../../application/exception/genericExceptio
 import { GitHubUsernameNotFoundException } from '../../../application/exception/gitHubUsernameNotFoundException.entity';
 import { RepositoryEntity } from '../entity/repository.entity';
 
-export async function getAllReposByUsername(username: string) {
+export async function getAllReposByUsername(username: string): Promise<RepositoryEntity[]> {
   try {
     const { data } = await axiosClient.get<RepositoryEntity[]>(
       `/users/${username}/repos`

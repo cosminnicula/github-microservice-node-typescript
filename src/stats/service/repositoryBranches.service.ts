@@ -2,7 +2,7 @@ import { getAllReposByUsername } from '../../upstream/repository/service/reposit
 import { getAllBranchesByRepositoryName } from '../../upstream/repository/service/branch.service';
 import { RepositoryBranchesEntity } from '../entity/repositoryBranches.entity';
 
-export async function getAllRepositoriesAndBranches(username: string) {
+export async function getAllRepositoriesAndBranches(username: string): Promise<RepositoryBranchesEntity[]> {
   const repositories = await getAllReposByUsername(username);
 
   const repositoryBranches: RepositoryBranchesEntity[] = [];

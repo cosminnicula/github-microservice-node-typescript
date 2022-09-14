@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const axiosClient = axios.create({
   baseURL: `${process.env.GITHUB_BASE_URL}`

@@ -1,4 +1,5 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 
 import { GitHubUsernameNotFoundException } from '../gitHubUsernameNotFoundException.entity';
 
@@ -9,14 +10,14 @@ export function handleHttpError(
   next: NextFunction
 ): void {
   if (e instanceof GitHubUsernameNotFoundException) {
-    response.status(404).send({
+    response.status(StatusCodes.NOT_FOUND).send({
       message: e.message,
-      status: 404
+      status: StatusCodes.NOT_FOUND
     });
   } else {
-    response.status(500).send({
+    response.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
       message: e.message,
-      status: 500
+      status: StatusCodes.INTERNAL_SERVER_ERROR
     });
   }
 }

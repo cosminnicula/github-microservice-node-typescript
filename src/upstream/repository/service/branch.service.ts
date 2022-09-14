@@ -2,7 +2,7 @@ import axiosClient from '../../../application/config/api.config';
 import { GenericException } from '../../../application/exception/genericException.entity';
 import { BranchEntity } from '../entity/branch.entity';
 
-export async function getAllBranchesByRepositoryName(username: string, repositoryName: string) {
+export async function getAllBranchesByRepositoryName(username: string, repositoryName: string): Promise<BranchEntity[]> {
   try {
     const { data } = await axiosClient.get<BranchEntity[]>(
       `/repos/${username}/${repositoryName}/branches`

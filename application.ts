@@ -1,4 +1,5 @@
-import express from 'express';
+import express, { Application, Request, Response } from 'express';
+import { StatusCodes } from 'http-status-codes';
 import * as http from 'http';
 import * as winston from 'winston';
 import * as expressWinston from 'express-winston';
@@ -12,14 +13,16 @@ const swaggerDocument = YAML.load('./swagger-openapi3.yml');
 import { CommonRoutesConfig } from './src/application/config/commonRoutes.config';
 import { handleHttpError } from './src/application/exception/middleware/exceptionHandler.middleware';
 import { StatsRoutes } from './src/stats/stats.routes.config';
+import { handleMediaType } from './src/application/exception/middleware/mediaTypeHandler.middleware';
 
-const application: express.Application = express();
+const application: Application = express();
 const server: http.Server = http.createServer(application);
 const port = process.env.SERVER_PORT;
 const routes: CommonRoutesConfig[] = [];
 
 application.use(express.json());
 application.use(cors());
+application.use(express.urlencoded({ extended: true }));
 
 const loggerOptions: expressWinston.LoggerOptions = {
   transports: [new winston.transports.Console()],
@@ -34,18 +37,31 @@ if (!process.env.DEBUG) {
   loggerOptions.meta = false;
 }
 
+// 3-rd party middleware
 application.use(expressWinston.logger(loggerOptions));
 
+// pre-request custom middleware
+application.use(handleMediaType);
+
+// routes
 routes.push(new StatsRoutes(application));
 
-application.use('/swagger-ui', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+// swagger route
+application.use('/swagger-ui', swaggerUi.serve);
+application.get('/swagger-ui', swaggerUi.setup(swaggerDocument));
 
-application.use(handleHttpError);
-
-application.get('/health', (req: express.Request, res: express.Response) => {
-  res.status(200).send('up')
+// health route
+application.get('/health', (req: Request, res: Response) => {
+  res.status(StatusCodes.OK).send('up')
 });
+
+// post-request custom middleware
+application.use(handleHttpError);
 
 server.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
+export default application;
+
+// logging, parameter validation
