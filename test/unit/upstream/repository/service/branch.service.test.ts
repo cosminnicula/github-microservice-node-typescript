@@ -29,11 +29,11 @@ describe('Branch Service', () => {
     expect(data.length).toEqual(2);
   });
 
-  test('should throw GenericException when request fails with unknown error', async () => {
+  test('should throw original exception when request fails with unknown error', async () => {
     jest
       .spyOn(axiosClient, 'get')
       .mockImplementationOnce(() => { throw new Error(); });
 
-      expect(getAllBranchesByRepositoryName('b', 'u')).rejects.toBeInstanceOf(GenericException);
+      expect(getAllBranchesByRepositoryName('b', 'u')).rejects.toBeInstanceOf(Error);
   });
 });

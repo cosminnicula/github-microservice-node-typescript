@@ -1,5 +1,4 @@
 import axiosClient from '../../../application/config/api.config';
-import { GenericException } from '../../../application/exception/genericException.entity';
 import { BranchEntity } from '../entity/branch.entity';
 
 export async function getAllBranchesByRepositoryName(username: string, repositoryName: string): Promise<BranchEntity[]> {
@@ -10,7 +9,8 @@ export async function getAllBranchesByRepositoryName(username: string, repositor
 
     return data;
   } catch (e) {
-    console.log(`An exception occurred:`, JSON.stringify(e));
-    throw new GenericException(e as string);
+    const message = `An exception occurred while retrieving all branches for repository=${repositoryName} and user=${username}:`;
+    console.log(message, JSON.stringify(e));
+    throw e;
   }
 }

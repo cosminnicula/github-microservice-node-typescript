@@ -6,17 +6,20 @@ import { StatusCodes } from 'http-status-codes';
 
 import { application, server } from '../../application';
 import { RepositoryBranchesEntity } from '../../src/stats/entity/repositoryBranches.entity';
+import axiosClient from '../../src//application/config/api.config';
 
 describe('Application integration tests', () => {
   let applicationInstance: Application;
 
   let serverInstance: http.Server
 
-  let username = "cosminnicula";
+  const username = "cosminnicula";
 
-  let dummyUsername = "abc1816453621721xyz";
+  const dummyUsername = "abc1816453621721xyz";
 
-  let repositoriesNumber = 16;
+  const dummyAuthorizationToken = "dummy";
+
+  const repositoriesNumber = 16;
 
   beforeAll(async () => {
     applicationInstance = application;
@@ -62,6 +65,21 @@ describe('Application integration tests', () => {
       .expect((res: request.Response) => {
         expect(res.body.message).toBe(`Media type application/xml not supported.`);
       })
+  });
+
+  test('should return 401 when request is not authorized', async () => {
+    axiosClient.defaults.headers.common['Authorization'] = `token ${dummyAuthorizationToken}`;
+
+    await request(applicationInstance)
+      .get(`/api/v1/stats/repository-branches?username=${dummyUsername}`)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', 'application/json; charset=utf-8')
+      .expect(StatusCodes.UNAUTHORIZED)
+      .expect((res: request.Response) => {
+        expect(res.body.message).toBe(`Not authorized`);
+      })
+
+    axiosClient.defaults.headers.common['Authorization'] = `token ${process.env.GITHUB_PERSONAL_ACCESS_TOKEN}`;
   });
 
   test('should return 400 when username parameter is missing', async () => {

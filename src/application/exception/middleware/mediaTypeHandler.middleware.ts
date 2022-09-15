@@ -9,7 +9,9 @@ export function handleMediaType(
 ): void {
   const acceptHeader = getHeader('accept', request.headers);
 
-  if (!acceptHeader || (acceptHeader !== 'application/json' && acceptHeader !== '*/*')) {
+  if (request.url.startsWith('/api/') &&
+    (!acceptHeader ||
+      (acceptHeader !== 'application/json' && acceptHeader !== '*/*'))) {
     response.status(StatusCodes.NOT_ACCEPTABLE).send({
       message: `Media type ${acceptHeader} not supported.`,
       status: StatusCodes.NOT_ACCEPTABLE

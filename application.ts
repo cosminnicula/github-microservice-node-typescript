@@ -43,7 +43,7 @@ application.use(expressWinston.logger(loggerOptions));
 // pre-request custom middleware
 application.use(handleMediaType);
 
-// routes
+// application routes
 routes.push(new StatsRoutes(application));
 
 // swagger route
@@ -70,7 +70,3 @@ export {
   application,
   server
 };
-
-// dockerfile, code coverage, proper logging, debug script, lint
-
-// -> exception middleware:14
