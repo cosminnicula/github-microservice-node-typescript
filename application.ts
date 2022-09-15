@@ -17,7 +17,7 @@ import { handleMediaType } from './src/application/exception/middleware/mediaTyp
 
 const application: Application = express();
 const server: http.Server = http.createServer(application);
-const port = process.env.SERVER_PORT;
+const port = process.env.SERVER_PORT || 8080;
 const routes: CommonRoutesConfig[] = [];
 
 application.use(express.json());
@@ -62,6 +62,15 @@ server.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
 
-export default application;
+process.on('SIGINT', () => {
+  process.exit();
+});
 
-// logging, parameter validation
+export {
+  application,
+  server
+};
+
+// dockerfile, code coverage, proper logging, debug script, lint
+
+// -> exception middleware:14

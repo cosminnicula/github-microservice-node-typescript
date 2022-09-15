@@ -1,28 +1,17 @@
-import express, { Request, Response, NextFunction } from 'express';
-import { StatusCodes } from 'http-status-codes';
+import { Application } from 'express';
 
 import { CommonRoutesConfig } from '../application/config/commonRoutes.config';
-import { getRepositories } from './controllers/stats.controller';
+import { getRepositories } from './controller/stats.controller';
+import { validateRequiredParameter } from '../application/middleware/validateParameter.middleware';
 
 export class StatsRoutes extends CommonRoutesConfig {
-  constructor(app: express.Application) {
+  constructor(app: Application) {
     super(app, 'StatsRoutes');
   }
 
-  configureRoutes(): express.Application {
+  configureRoutes(): Application {
     this.app
-      .get('/api/v1/stats/repository-branches', (() => {
-        return (request: Request, response: Response, next: NextFunction) => {
-          if (request.query['username'] === undefined) {
-            response.status(StatusCodes.BAD_REQUEST).send({
-              message: `Missing username parameter.`,
-              status: StatusCodes.BAD_REQUEST
-            });
-          } else {
-            next();
-          }
-        }
-      })(), getRepositories);
+      .get('/api/v1/stats/repository-branches', validateRequiredParameter('username'), getRepositories);
 
     return this.app;
   }

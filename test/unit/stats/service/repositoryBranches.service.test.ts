@@ -4,6 +4,7 @@ import { RepositoryEntity } from '../../../../src/upstream/repository/entity/rep
 import { BranchEntity } from '../../../../src/upstream/repository/entity/branch.entity';
 import * as BranchService from '../../../../src/upstream/repository/service/branch.service';
 import * as RepositoryService from '../../../../src/upstream/repository/service/repository.service';
+import { RepositoryBranchesEntity } from '../../../../src/stats/entity/repositoryBranches.entity';
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -43,7 +44,7 @@ describe('RepositoryBranches Service', () => {
       .spyOn(BranchService, 'getAllBranchesByRepositoryName')
       .mockResolvedValueOnce(branches);
 
-    const repositoriesAndBranches = await getAllRepositoriesAndBranches('u');
+    const repositoriesAndBranches: RepositoryBranchesEntity[] = await getAllRepositoriesAndBranches('u');
 
     expect(repositoriesAndBranches.length).toEqual(1);
     expect(repositoriesAndBranches[0].branches.length).toEqual(1);

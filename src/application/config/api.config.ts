@@ -1,9 +1,12 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
+import { UnauthorizedException } from '../exception/unauthorizedException.entity';
 
-export const axiosClient = axios.create({
-  baseURL: `${process.env.GITHUB_BASE_URL}`
+export const axiosClient: AxiosInstance = axios.create({
+  baseURL: `${process.env.GITHUB_BASE_URL || 'https://api.github.com'}`
 });
 
-axiosClient.defaults.headers.common['Authorization'] = `token ${process.env.GITHUB_PERSONAL_ACCESS_TOKEN}`;
+if (process.env.GITHUB_PERSONAL_ACCESS_TOKEN) {
+  axiosClient.defaults.headers.common['Authorization'] = `token ${process.env.GITHUB_PERSONAL_ACCESS_TOKEN}`;
+}
 
 export default axiosClient;

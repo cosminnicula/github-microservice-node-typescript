@@ -4,13 +4,13 @@ import { BranchEntity } from '../entity/branch.entity';
 
 export async function getAllBranchesByRepositoryName(username: string, repositoryName: string): Promise<BranchEntity[]> {
   try {
-    const { data } = await axiosClient.get<BranchEntity[]>(
+    const { data }: { data: BranchEntity[] } = await axiosClient.get<BranchEntity[]>(
       `/repos/${username}/${repositoryName}/branches`
     );
 
     return data;
   } catch (e) {
-    console.log(`An exception occurred:`, e as string);
+    console.log(`An exception occurred:`, JSON.stringify(e));
     throw new GenericException(e as string);
   }
 }

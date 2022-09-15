@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 import { GitHubUsernameNotFoundException } from '../../../../src/application/exception/gitHubUsernameNotFoundException.entity';
-import { getRepositories } from '../../../../src/stats/controllers/stats.controller';
+import { getRepositories } from '../../../../src/stats/controller/stats.controller';
 
 import * as RepositoriesAndBranchesService from '../../../../src/stats/service/repositoryBranches.service';
 
@@ -16,9 +16,9 @@ describe('RepositoryBranches Service', () => {
       .spyOn(RepositoriesAndBranchesService, 'getAllRepositoriesAndBranches')
       .mockResolvedValueOnce([]);
 
-      const requestMock = { query: { username: 'u' } } as any as Request;
-      const responseMock = { status: jest.fn()} as any as Response;
-      const nextFunctionMock = jest.fn();
+      const requestMock: Request = { query: { username: 'u' } } as any as Request;
+      const responseMock: Response = { status: jest.fn()} as any as Response;
+      const nextFunctionMock: jest.Mock = jest.fn();
 
       await getRepositories(requestMock, responseMock, nextFunctionMock);
       
@@ -30,9 +30,9 @@ describe('RepositoryBranches Service', () => {
       .spyOn(RepositoriesAndBranchesService, 'getAllRepositoriesAndBranches')
       .mockImplementationOnce(() => { throw new GitHubUsernameNotFoundException(''); });
 
-    const requestMock = { query: { username: 'u' } } as any as Request;
-    const responseMock = { status: jest.fn()} as any as Response;
-    const nextFunctionMock = jest.fn();
+    const requestMock: Request = { query: { username: 'u' } } as any as Request;
+    const responseMock: Response = { status: jest.fn()} as any as Response;
+    const nextFunctionMock: jest.Mock = jest.fn();
 
     await getRepositories(requestMock, responseMock, nextFunctionMock);
   

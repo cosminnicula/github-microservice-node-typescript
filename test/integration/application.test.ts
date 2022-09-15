@@ -1,13 +1,16 @@
 import 'jest';
+import * as http from 'http';
 import { Application, } from 'express';
 import request from 'supertest';
 import { StatusCodes } from 'http-status-codes';
 
-import application from '../../application';
+import { application, server } from '../../application';
 import { RepositoryBranchesEntity } from '../../src/stats/entity/repositoryBranches.entity';
 
 describe('Application integration tests', () => {
   let applicationInstance: Application;
+
+  let serverInstance: http.Server
 
   let username = "cosminnicula";
 
@@ -17,6 +20,11 @@ describe('Application integration tests', () => {
 
   beforeAll(async () => {
     applicationInstance = application;
+    serverInstance = server;
+  });
+
+  afterAll(async () => {
+    serverInstance.close();
   });
 
   test('should return correct number of items and data when username exists', async () => {

@@ -29,7 +29,7 @@ describe('Branch Service', () => {
     expect(data.length).toEqual(2);
   });
 
-  test('should throw GenericException when request fails with any type of error', async () => {
+  test('should throw GenericException when request fails with unknown error', async () => {
     jest
       .spyOn(axiosClient, 'get')
       .mockImplementationOnce(() => { throw new Error(); });

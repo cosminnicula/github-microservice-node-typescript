@@ -1,7 +1,11 @@
-import { AxiosError } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
+import { StatusCodes } from 'http-status-codes'
+
 import axiosClient from '../../../../../src/application/config/api.config';
 import { GenericException } from '../../../../../src/application/exception/genericException.entity';
 import { GitHubUsernameNotFoundException } from '../../../../../src/application/exception/gitHubUsernameNotFoundException.entity';
+import { UnauthorizedException } from '../../../../../src/application/exception/unauthorizedException.entity';
+import { RepositoryEntity } from '../../../../../src/upstream/repository/entity/repository.entity';
 import { getAllReposByUsername } from '../../../../../src/upstream/repository/service/repository.service';
 
 beforeEach(() => {
@@ -26,32 +30,40 @@ describe('Repository Service', () => {
         }],
       });
 
-    const data = await getAllReposByUsername('u');
+    const data: RepositoryEntity[] = await getAllReposByUsername('u');
 
     expect(data.length).toEqual(2);
   });
 
-  test('should throw GitHubUsernameNotFoundException when username does not exists', async () => {
+  test('should throw GitHubUsernameNotFoundException when request fails with 404 AxiosError', async () => {
     jest
       .spyOn(axiosClient, 'get')
-      .mockImplementationOnce(() => { throw new AxiosError('', 'ERR_BAD_REQUEST'); });
+      .mockImplementationOnce(() => { throw new AxiosError('', '', undefined, null, { status: StatusCodes.NOT_FOUND } as any as AxiosResponse) });
 
-      expect(getAllReposByUsername('u')).rejects.toBeInstanceOf(GitHubUsernameNotFoundException);
+    expect(getAllReposByUsername('u')).rejects.toBeInstanceOf(GitHubUsernameNotFoundException);
   });
 
-  test('should throw GenericException when request fails with non-ERR_BAD_REQUEST AxiosError', async () => {
+  test('should throw GenericException when request fails with unknown AxiosError', async () => {
     jest
       .spyOn(axiosClient, 'get')
-      .mockImplementationOnce(() => { throw new AxiosError('', 'ERR_CONNECTION_REFUSED'); });
+      .mockImplementationOnce(() => { throw new AxiosError('', '', undefined, null, { status: StatusCodes.BAD_GATEWAY } as any as AxiosResponse) });
 
-      expect(getAllReposByUsername('u')).rejects.toBeInstanceOf(GenericException);
+    expect(getAllReposByUsername('u')).rejects.toBeInstanceOf(GenericException);
   });
 
-  test('should throw GenericException when request fails with any type of error', async () => {
+  test('should throw UnauthorizedException when request is not authorized', async () => {
+    jest
+      .spyOn(axiosClient, 'get')
+      .mockImplementationOnce(() => { throw new AxiosError('', '', undefined, null, { status: StatusCodes.UNAUTHORIZED } as any as AxiosResponse) });
+
+    expect(getAllReposByUsername('u')).rejects.toBeInstanceOf(UnauthorizedException);
+  });
+
+  test('should throw GenericException when request fails with unknown error', async () => {
     jest
       .spyOn(axiosClient, 'get')
       .mockImplementationOnce(() => { throw new Error(); });
 
-      expect(getAllReposByUsername('u')).rejects.toBeInstanceOf(GenericException);
+    expect(getAllReposByUsername('u')).rejects.toBeInstanceOf(GenericException);
   });
 });
