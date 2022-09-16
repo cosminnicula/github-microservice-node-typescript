@@ -28,7 +28,8 @@ describe('RepositoryBranches Service', () => {
       name: 'r1',
       owner: {
         login: 'u1'
-      }
+      },
+      fork: false
     }];
     jest
       .spyOn(RepositoryService, 'getAllReposByUsername')
@@ -48,5 +49,26 @@ describe('RepositoryBranches Service', () => {
 
     expect(repositoriesAndBranches.length).toEqual(1);
     expect(repositoriesAndBranches[0].branches.length).toEqual(1);
+  });
+
+  test('should exclude forked repositories', async () => {
+    const repositories: RepositoryEntity[] = [{
+      name: 'r1',
+      owner: {
+        login: 'u1'
+      },
+      fork: true
+    }];
+    jest
+      .spyOn(RepositoryService, 'getAllReposByUsername')
+      .mockResolvedValueOnce(repositories);
+
+    jest
+      .spyOn(BranchService, 'getAllBranchesByRepositoryName')
+      .mockResolvedValueOnce([]);
+
+    const repositoriesAndBranches: RepositoryBranchesEntity[] = await getAllRepositoriesAndBranches('u');
+
+    expect(repositoriesAndBranches.length).toEqual(0);
   });
 });
