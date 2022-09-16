@@ -19,7 +19,7 @@ describe('Application integration tests', () => {
 
   const dummyAuthorizationToken = "dummy";
 
-  const repositoriesNumber = 16;
+  const repositoriesNumber = 17;
 
   beforeAll(async () => {
     applicationInstance = application;
