@@ -1,6 +1,5 @@
 import express, { Application, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import * as http from 'http';
 import * as winston from 'winston';
 import * as expressWinston from 'express-winston';
 import cors from 'cors';
@@ -16,8 +15,6 @@ import { StatsRoutes } from './src/stats/stats.routes.config';
 import { handleMediaType } from './src/application/exception/middleware/mediaTypeHandler.middleware';
 
 const application: Application = express();
-const server: http.Server = http.createServer(application);
-const port = process.env.SERVER_PORT || 8080;
 const routes: CommonRoutesConfig[] = [];
 
 application.use(express.json());
@@ -58,15 +55,4 @@ application.get('/health', (req: Request, res: Response) => {
 // post-request custom middleware
 application.use(handleHttpError);
 
-server.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
-
-process.on('SIGINT', () => {
-  process.exit();
-});
-
-export {
-  application,
-  server
-};
+export default application;

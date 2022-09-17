@@ -4,7 +4,7 @@ import { Application, } from 'express';
 import request from 'supertest';
 import { StatusCodes } from 'http-status-codes';
 
-import { application, server } from '../../application';
+import application from '../../application';
 import { RepositoryBranchesEntity } from '../../src/stats/entity/repositoryBranches.entity';
 import axiosClient from '../../src//application/config/api.config';
 
@@ -23,7 +23,7 @@ describe('Application integration tests', () => {
 
   beforeAll(async () => {
     applicationInstance = application;
-    serverInstance = server;
+    serverInstance = application.listen(0);
   });
 
   afterAll(async () => {

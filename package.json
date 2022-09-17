@@ -2,9 +2,9 @@
   "name": "github-microservice-node-typescript",
   "version": "1.0.0",
   "description": "This is a sample TypeScript + Node.js & Express microservice that interacts with the GitHub API in order to retrieve and process Repositories + Branches information.",
-  "main": "application.ts",
+  "main": "index.ts",
   "scripts": {
-    "start": "tsc && node ./dist/application.js",
+    "start": "tsc && node ./dist/index.js",
     "build": "webpack",
     "eslint": "eslint src",
     "test": "jest --coverage",
