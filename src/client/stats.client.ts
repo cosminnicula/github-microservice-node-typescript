@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 export default class StatsClient {
-  private axiosInstance: AxiosInstance
+  private axiosInstance: AxiosInstance;
 
   constructor(baseUrl: string) {
     this.axiosInstance = axios.create({ baseURL: baseUrl });

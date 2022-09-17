@@ -7,7 +7,7 @@ import { BranchEntity } from '../../upstream/repository/entity/branch.entity';
 export async function getAllRepositoriesAndBranches(username: string): Promise<RepositoryBranchesEntity[]> {
   const repositories: RepositoryEntity[] = await getAllReposByUsername(username);
 
-  return await Promise.all(repositories
+  return Promise.all(repositories
     .filter((repository) => !repository.fork)
     .map(async (repository) => {
       const branches: BranchEntity[] = await getAllBranchesByRepositoryName(username, repository.name);
@@ -18,6 +18,6 @@ export async function getAllRepositoriesAndBranches(username: string): Promise<R
           name: branch.name,
           commitSha: branch.commit.sha
         }))
-      }
+      };
     }));
 }

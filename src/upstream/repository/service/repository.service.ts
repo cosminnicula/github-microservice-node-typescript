@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { StatusCodes } from 'http-status-codes'
+import { StatusCodes } from 'http-status-codes';
 
 import axiosClient from '../../../application/config/api.config';
 import { GitHubUsernameNotFoundException } from '../../../application/exception/gitHubUsernameNotFoundException.entity';

@@ -11,5 +11,5 @@ export function validateRequiredParameter(parameterName: string) {
     } else {
       next();
     }
-  }
+  };
 }

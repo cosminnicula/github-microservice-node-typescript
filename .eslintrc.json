@@ -5,5 +5,26 @@
     "sourceType": "module"
   },
   "plugins": ["@typescript-eslint"],
-  "extends": ["plugin:@typescript-eslint/recommended"]
+  "extends": ["airbnb-base", "plugin:@typescript-eslint/recommended"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".ts"]
+      }
+    }
+  },
+  "rules": {
+    "import/extensions": [ "error", "ignorePackages", { "js": "never", "ts": "never" }],
+    "comma-dangle": "off",
+    "@typescript-eslint/comma-dangle": "off",
+    "eol-last": "off",
+    "arrow-parens": "off",
+    "lines-between-class-members": "off",
+    "import/prefer-default-export": "off",
+    "no-use-before-define": "off",
+    "max-len": ["error", { "code": 140 }],
+    "operator-linebreak": "off",
+    "no-console": "off",
+    "no-mixed-operators": "off"
+  }
 }

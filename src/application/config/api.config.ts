@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { StatusCodes } from 'http-status-codes'
+import { StatusCodes } from 'http-status-codes';
 
 import { UnauthorizedException } from '../exception/unauthorizedException.entity';
 
@@ -16,10 +16,10 @@ axiosClient.interceptors.response.use(
 
     return Promise.reject(err);
   }
-)
+);
 
 if (process.env.GITHUB_PERSONAL_ACCESS_TOKEN) {
-  axiosClient.defaults.headers.common['Authorization'] = `token ${process.env.GITHUB_PERSONAL_ACCESS_TOKEN}`;
+  axiosClient.defaults.headers.common.Authorization = `token ${process.env.GITHUB_PERSONAL_ACCESS_TOKEN}`;
 }
 
 export default axiosClient;
