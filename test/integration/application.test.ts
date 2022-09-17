@@ -6,7 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import application from '../../application';
 import { RepositoryBranchesEntity } from '../../src/stats/entity/repositoryBranches.entity';
-import axiosClient from '../../src//application/config/api.config';
+import axiosClient from '../../src/application/config/api.config';
 
 describe('Application integration tests', () => {
   let applicationInstance: Application;
@@ -31,6 +31,15 @@ describe('Application integration tests', () => {
   });
 
   test('should return correct number of items and data when username exists', async () => {
+    const expectedRepositoryBranches: RepositoryBranchesEntity[] = [{
+      repositoryName: 'go-playground',
+      repositoryOwner: 'cosminnicula',
+      branches: [{
+        name: 'main',
+        commitSha: '582b3eb2bcee10dd243936b5786880a742c3d630'
+      }]
+    }];
+
     await request(applicationInstance)
       .get(`/api/v1/stats/repository-branches?username=${username}`)
       .set('Accept', 'application/json')
@@ -38,10 +47,15 @@ describe('Application integration tests', () => {
       .expect(StatusCodes.OK)
       .expect((res: request.Response) => {
         expect(res.body.length).toBe(repositoriesNumber);
-        expect(res.body.find((repository: RepositoryBranchesEntity) => {
-          return repository.repositoryOwner === 'cosminnicula' &&
-            repository.repositoryName === 'go-playground';
-        })).toBeDefined();
+        expect(res.body.find((repository: RepositoryBranchesEntity) =>
+          repository.repositoryOwner === expectedRepositoryBranches[0].repositoryOwner &&
+          repository.repositoryName === expectedRepositoryBranches[0].repositoryName
+        )).toBeDefined();
+        expect(res.body.find((repository: RepositoryBranchesEntity) =>
+          repository.branches.find((branch) =>
+            branch.name === expectedRepositoryBranches[0].branches[0].name &&
+            branch.commitSha === expectedRepositoryBranches[0].branches[0].commitSha)
+        )).toBeDefined();
       })
   });
 
